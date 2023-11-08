@@ -1,0 +1,5 @@
+<template>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- Logo and links -->
+    </nav>
+</template>
