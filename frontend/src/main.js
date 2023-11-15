@@ -1,15 +1,15 @@
-import './assets/main.css'
-
+//import './assets/main.css'
+import './index.css'
 import { createApp } from 'vue'
 import App from './App.vue'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { GoogleMap } from 'vue3-google-map';
-
+import  VueGoogleMaps from '@fawmi/vue-google-maps'
+import router from './router';
+//
 const app = createApp(App);
-app.use(GoogleMap, {
+app.use(VueGoogleMaps, {
     load: {
         key: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
     },
 });
-
+app.use(router);
 app.mount('#app')

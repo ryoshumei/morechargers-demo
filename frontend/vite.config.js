@@ -16,5 +16,11 @@ export default defineConfig({
     server: {
         host: '0.0.0.0',  // allow external access
         port: 3000  // default: 3000
-    }
+    },
+    optimizeDeps: {
+        include: [
+            "@fawmi/vue-google-maps",
+            "fast-deep-equal",
+        ],
+    },
 });
