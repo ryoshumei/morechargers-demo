@@ -13,12 +13,16 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('google_id')->nullable(); // nullable Google ID
+            $table->string('ip_address');
+            $table->dateTime('signup_datetime')->nullable(); // nullable signup datetime
+            $table->dateTime('last_login_datetime')->nullable(); // nullable last login datetime
+            $table->enum('user_role', ['user', 'provider', 'admin']); // enum for user roles
+            $table->enum('account_type', ['anonymous', 'signed_up', 'google']); // enum for account types
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestamps(); // created_at and updated_at columns
         });
     }
 
