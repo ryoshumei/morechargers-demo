@@ -13,6 +13,14 @@ return new class extends Migration
     {
         Schema::create('desired_locations', function (Blueprint $table) {
             $table->id();
+            $table->double('latitude');
+            $table->double('longitude');
+            $table->integer('hope_radius');
+            $table->boolean('has_ev_car');
+            $table->foreignId('brand_id')->nullable()->constrained('brands')->onDelete('set null');
+            $table->foreignId('model_id')->nullable()->constrained('vehicle_models')->onDelete('set null');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('comment')->nullable();
             $table->timestamps();
         });
     }

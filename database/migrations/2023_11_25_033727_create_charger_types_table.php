@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('charger_types', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('name');
+            $table->timestamps(); // 创建 created_at 和 updated_at 字段
         });
+
     }
 
     /**

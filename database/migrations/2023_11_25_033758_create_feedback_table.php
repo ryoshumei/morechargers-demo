@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
+            $table->text('text');
+            $table->string('img_url');
             $table->timestamps();
         });
     }

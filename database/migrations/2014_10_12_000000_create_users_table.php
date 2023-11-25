@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('name');
             $table->string('google_id')->nullable(); // nullable Google ID
             $table->string('ip_address');
             $table->dateTime('signup_datetime')->nullable(); // nullable signup datetime
