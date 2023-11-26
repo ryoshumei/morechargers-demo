@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\ChargerType;
+use App\Models\ProviderCompany;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\DesiredLocation;
 use App\Models\Brand;
@@ -28,6 +30,8 @@ class DesiredLocationFactory extends Factory
             'has_ev_car' => $this->faker->boolean,
             'brand_id' => Brand::factory(),
             'model_id' => VehicleModel::factory(),
+            'charger_type_id' => ChargerType::factory(),
+            'provider_company_id' => ProviderCompany::factory(),
             'user_id' => User::factory(),
             'comment' => $this->faker->sentence,
         ];

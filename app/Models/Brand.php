@@ -24,4 +24,12 @@ class Brand extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function desiredLocations(){
+        return $this->hasMany(DesiredLocation::class);
+    }
+
+    public function vehicleModels(){
+        return $this->hasMany(VehicleModel::class);
+    }
 }

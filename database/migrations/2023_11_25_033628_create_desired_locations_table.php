@@ -19,6 +19,8 @@ return new class extends Migration
             $table->boolean('has_ev_car');
             $table->foreignId('brand_id')->nullable()->constrained('brands')->onDelete('set null');
             $table->foreignId('model_id')->nullable()->constrained('vehicle_models')->onDelete('set null');
+            $table->foreignId('charger_type_id')->nullable()->constrained('charger_types')->onDelete('set null');
+            $table->foreignId('provider_company_id')->nullable()->constrained('provider_companies')->onDelete('set null');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('comment')->nullable();
             $table->timestamps();

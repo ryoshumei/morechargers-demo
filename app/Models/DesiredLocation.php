@@ -28,6 +28,8 @@ class DesiredLocation extends Model
         'has_ev_car',
         'brand_id',
         'model_id',
+        'charger_type_id',
+        'provider_company_id',
         'user_id',
         'comment',
     ];
@@ -54,5 +56,15 @@ class DesiredLocation extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function chargerType()
+    {
+        return $this->belongsTo(ChargerType::class, 'charger_type_id');
+    }
+
+    public function providerCompany()
+    {
+        return $this->belongsTo(ProviderCompany::class, 'provider_company_id');
     }
 }

@@ -50,4 +50,8 @@ class User extends Authenticatable
         'signup_datetime' => 'datetime',
         'last_login_datetime' => 'datetime',
     ];
+
+    public function desiredLocations(){
+        return $this->hasMany(DesiredLocation::class);
+    }
 }

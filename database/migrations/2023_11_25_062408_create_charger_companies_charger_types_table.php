@@ -15,7 +15,6 @@ return new class extends Migration
             $table->foreignId('charger_type_id')->constrained('charger_types')->onDelete('cascade');
             $table->foreignId('provider_company_id')->constrained('provider_companies')->onDelete('cascade');
             $table->primary(['charger_type_id', 'provider_company_id']);
-            $table->timestamps();
         });
     }
 

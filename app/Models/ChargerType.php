@@ -24,4 +24,13 @@ class ChargerType extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function desiredLocations(){
+        return $this->hasMany(DesiredLocation::class);
+    }
+
+    public function providerCompanies()
+    {
+        return $this->belongsToMany(ProviderCompany::class, 'charger_companies_charger_types');
+    }
 }

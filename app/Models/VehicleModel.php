@@ -33,4 +33,8 @@ class VehicleModel extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
+
+    public function desiredLocations(){
+        return $this->hasMany(DesiredLocation::class);
+    }
 }
