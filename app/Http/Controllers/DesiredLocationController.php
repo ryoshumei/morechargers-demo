@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DesiredLocation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DesiredLocationController extends Controller
 {
@@ -17,6 +18,7 @@ class DesiredLocationController extends Controller
             $desiredLocations = DesiredLocation::all();
             return response()->json($desiredLocations);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '无法获取期望位置列表'], 500);
         }
     }
@@ -38,8 +40,10 @@ class DesiredLocationController extends Controller
             $desiredLocation = DesiredLocation::create($validatedData);
             return response()->json($desiredLocation, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '创建期望位置时发生错误'], 500);
         }
     }
@@ -54,8 +58,10 @@ class DesiredLocationController extends Controller
             $desiredLocation = DesiredLocation::findOrFail($id);
             return response()->json($desiredLocation);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到期望位置'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '获取期望位置信息时发生错误'], 500);
         }
     }
@@ -79,10 +85,13 @@ class DesiredLocationController extends Controller
             $desiredLocation->update($validatedData);
             return response()->json($desiredLocation);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到期望位置'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '更新期望位置时发生错误'], 500);
         }
     }
@@ -98,8 +107,10 @@ class DesiredLocationController extends Controller
             $desiredLocation->delete();
             return response()->json(null, 204);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到期望位置'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '删除期望位置时发生错误'], 500);
         }
     }

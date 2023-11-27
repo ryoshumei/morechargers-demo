@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\VehicleModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class VehicleModelController extends Controller
 {
@@ -16,6 +17,7 @@ class VehicleModelController extends Controller
             $vehicleModels = VehicleModel::all();
             return response()->json($vehicleModels);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '无法获取车辆模型列表'], 500);
         }
     }
@@ -35,8 +37,10 @@ class VehicleModelController extends Controller
             $vehicleModel = VehicleModel::create($validatedData);
             return response()->json($vehicleModel, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '创建车辆模型时发生错误'], 500);
         }
     }
@@ -50,8 +54,10 @@ class VehicleModelController extends Controller
             $vehicleModel = VehicleModel::findOrFail($id);
             return response()->json($vehicleModel);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到车辆模型'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '获取车辆模型信息时发生错误'], 500);
         }
     }
@@ -73,10 +79,13 @@ class VehicleModelController extends Controller
             $vehicleModel->update($validatedData);
             return response()->json($vehicleModel);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到车辆模型'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '更新车辆模型时发生错误'], 500);
         }
     }
@@ -91,8 +100,10 @@ class VehicleModelController extends Controller
             $vehicleModel->delete();
             return response()->json(null, 204);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到车辆模型'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '删除车辆模型时发生错误'], 500);
         }
     }

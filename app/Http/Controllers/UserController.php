@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -16,6 +17,7 @@ class UserController extends Controller
             $users = User::all();
             return response()->json($users);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '无法获取用户列表'], 500);
         }
     }
@@ -38,8 +40,10 @@ class UserController extends Controller
             $user = User::create($validatedData);
             return response()->json($user, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '创建用户时发生错误'], 500);
         }
     }
@@ -53,8 +57,10 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             return response()->json($user);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到用户'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '获取用户信息时发生错误'], 500);
         }
     }
@@ -82,10 +88,13 @@ class UserController extends Controller
             $user->update($validatedData);
             return response()->json($user);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到用户'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '更新用户时发生错误'], 500);
         }
     }
@@ -100,8 +109,10 @@ class UserController extends Controller
             $user->delete();
             return response()->json(null, 204);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到用户'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '删除用户时发生错误'], 500);
         }
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProviderCompany;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProviderCompanyController extends Controller
 {
@@ -16,6 +17,7 @@ class ProviderCompanyController extends Controller
             $providerCompanies = ProviderCompany::all();
             return response()->json($providerCompanies);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '无法获取供应商公司列表'], 500);
         }
     }
@@ -34,8 +36,10 @@ class ProviderCompanyController extends Controller
             $providerCompany = ProviderCompany::create($validatedData);
             return response()->json($providerCompany, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '创建供应商公司时发生错误'], 500);
         }
     }
@@ -49,8 +53,10 @@ class ProviderCompanyController extends Controller
             $providerCompany = ProviderCompany::findOrFail($id);
             return response()->json($providerCompany);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到供应商公司'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '获取供应商公司信息时发生错误'], 500);
         }
     }
@@ -71,10 +77,13 @@ class ProviderCompanyController extends Controller
             $providerCompany->update($validatedData);
             return response()->json($providerCompany);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到供应商公司'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '更新供应商公司时发生错误'], 500);
         }
     }
@@ -89,8 +98,10 @@ class ProviderCompanyController extends Controller
             $providerCompany->delete();
             return response()->json(null, 204);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到供应商公司'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '删除供应商公司时发生错误'], 500);
         }
     }

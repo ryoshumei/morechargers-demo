@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Feedback;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FeedbackController extends Controller
 {
@@ -16,6 +17,7 @@ class FeedbackController extends Controller
             $feedbacks = Feedback::all();
             return response()->json($feedbacks);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '无法获取反馈列表'], 500);
         }
     }
@@ -36,8 +38,10 @@ class FeedbackController extends Controller
             $feedback = Feedback::create($validatedData);
             return response()->json($feedback, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '创建反馈时发生错误'], 500);
         }
     }
@@ -51,8 +55,10 @@ class FeedbackController extends Controller
             $feedback = Feedback::findOrFail($id);
             return response()->json($feedback);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到反馈'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '获取反馈信息时发生错误'], 500);
         }
     }
@@ -75,10 +81,13 @@ class FeedbackController extends Controller
             $feedback->update($validatedData);
             return response()->json($feedback);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到反馈'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '更新反馈时发生错误'], 500);
         }
     }
@@ -93,8 +102,10 @@ class FeedbackController extends Controller
             $feedback->delete();
             return response()->json(null, 204);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到反馈'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '删除反馈时发生错误'], 500);
         }
     }

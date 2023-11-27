@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class BrandController extends Controller
 {
@@ -17,6 +18,7 @@ class BrandController extends Controller
             $brands = Brand::all();
             return response()->json($brands);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '无法获取品牌列表'], 500);
         }
     }
@@ -36,8 +38,10 @@ class BrandController extends Controller
             $brand = Brand::create($validatedData);
             return response()->json($brand, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '创建品牌时发生错误'], 500);
         }
     }
@@ -52,8 +56,10 @@ class BrandController extends Controller
             $brand = Brand::findOrFail($id);
             return response()->json($brand);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到品牌'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '获取品牌信息时发生错误'], 500);
         }
     }
@@ -75,10 +81,13 @@ class BrandController extends Controller
             $brand->update($validatedData);
             return response()->json($brand);
         } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到品牌'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '更新品牌时发生错误'], 500);
         }
     }
@@ -86,7 +95,7 @@ class BrandController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Brand $id)
+    public function destroy($id)
     {
         //
         try {
@@ -94,8 +103,10 @@ class BrandController extends Controller
             $brand->delete();
             return response()->json(null, 204);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '未找到品牌'], 404);
         } catch (\Exception $e) {
+            Log::error($e->getMessage());
             return response()->json(['error' => '删除品牌时发生错误'], 500);
         }
     }
