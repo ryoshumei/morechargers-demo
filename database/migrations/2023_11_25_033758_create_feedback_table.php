@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->text('text');
-            $table->string('img_url');
+            $table->string('img_url')->nullable();
             $table->timestamps();
         });
     }
