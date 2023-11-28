@@ -34,6 +34,14 @@ class DesiredLocationController extends Controller
                 // 添加验证规则
                 'latitude' => 'required|numeric',
                 'longitude' => 'required|numeric',
+                'hope_radius' => 'required|integer',
+                'has_ev_car' => 'required|boolean',
+                'brand_id' => 'nullable|integer',
+                'model_id' => 'nullable|integer',
+                'charger_type_id' => 'nullable|integer',
+                'provider_company_id' => 'nullable|integer',
+                'user_id' => 'required|integer',
+                'comment' => 'nullable|string',
                 // 其他字段...
             ]);
 

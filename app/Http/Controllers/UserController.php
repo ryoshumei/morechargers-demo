@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -32,6 +33,7 @@ class UserController extends Controller
                 'name' => 'required|max:255',
                 'email' => 'required|email|unique:users',
                 'password' => 'required',
+                'ip_address' => 'nullable|ip',
                 // 其他字段的验证规则...
             ]);
 
