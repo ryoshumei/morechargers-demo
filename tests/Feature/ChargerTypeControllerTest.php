@@ -3,12 +3,25 @@
 namespace Tests\Feature;
 
 use App\Models\ChargerType;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class ChargerTypeControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+        // authenticate the user with Sanctum
+        // create a user
+        $user = User::factory()->create();
+
+        // authenticate the user with Sanctum
+        Sanctum::actingAs($user, ['*']);
+    }
 
     public function test_can_retrieve_charger_types()
     {

@@ -4,6 +4,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\ChargerTypeController;
 use App\Http\Controllers\DesiredLocationController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProviderCompanyController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleModelController;
@@ -21,16 +22,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::prefix('v1')->group(function (){
-    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-        return $request->user();
+    // public routes
+    Route::post('login', [LoginController::class, 'login']);
+    Route::post('logout', [LoginController::class, 'logout']);
+
+    // private routes
+    Route::middleware('auth:sanctum')->group(function (){
+        Route::get('/user', function (Request $request) {
+            return $request->user();
+        });
+        Route::apiResource('brand', BrandController::class);
+        Route::apiResource('chargertype', ChargerTypeController::class);
+        Route::apiResource('desired-location', DesiredLocationController::class);
+        Route::apiResource('feedback', FeedbackController::class);
+        Route::apiResource('provider-company', ProviderCompanyController::class);
+        Route::apiResource('user', UserController::class);
+        Route::apiResource('vehicle-model', VehicleModelController::class);
     });
 
-    Route::apiResource('brand', BrandController::class);
-    Route::apiResource('chargertype', ChargerTypeController::class);
-    Route::apiResource('desired-location', DesiredLocationController::class);
-    Route::apiResource('feedback', FeedbackController::class);
-    Route::apiResource('provider-company', ProviderCompanyController::class);
-    Route::apiResource('user', UserController::class);
-    Route::apiResource('vehicle-model', VehicleModelController::class);
 });
 

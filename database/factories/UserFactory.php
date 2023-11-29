@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'signup_datetime' => now(),
             'last_login_datetime' => now(),
             'user_role' => $this->faker->randomElement(['admin', 'user']), //  'admin' or 'user'
-            'account_type' => $this->faker->randomElement(['anonymous', 'signed_up', 'google']), // 假设账户类型为 'standard' 或 'premium'
+            'account_type' => $this->faker->randomElement(['anonymous', 'signed_up', 'google']), // 'anonymous', 'signed_up', or 'google'
             'remember_token' => Str::random(10),
         ];
     }

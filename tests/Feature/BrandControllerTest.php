@@ -3,24 +3,46 @@
 namespace Tests\Feature;
 
 use App\Models\Brand;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class BrandControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testGetAllBrands()
+    public function testAuthenticatedUserCanGetAllBrands()
     {
+        // create a user
+        $user = User::factory()->create();
+
+        // authenticate the user with Sanctum
+        Sanctum::actingAs($user, ['*']);
+
+        // Act: Make request
         $response = $this->getJson('/api/v1/brand');
         $response->assertStatus(200)
             ->assertJsonStructure([
                 '*' => ['id', 'name']
             ]);
     }
+    public function testUnauthenticatedUserCannotRetrieveBrandList()
+    {
+        // Act: Make request
+        $response = $this->getJson('/api/v1/brand');
+
+        // Assert: Assert that user is not authenticated
+        $response->assertStatus(401);
+    }
     public function test_can_retrieve_brands()
     {
+        // create a user
+        $user = User::factory()->create();
+
+        // authenticate the user with Sanctum
+        Sanctum::actingAs($user, ['*']);
         // Arrange: Create some brands
         $brand = Brand::factory()->create();
 
@@ -34,6 +56,11 @@ class BrandControllerTest extends TestCase
 
     public function test_can_create_brand()
     {
+        // create a user
+        $user = User::factory()->create();
+
+        // authenticate the user with Sanctum
+        Sanctum::actingAs($user, ['*']);
         // Arrange: Prepare data
         $data = [
             'name' => 'New Brand'
@@ -50,6 +77,11 @@ class BrandControllerTest extends TestCase
 
     public function test_can_show_brand()
     {
+        // create a user
+        $user = User::factory()->create();
+
+        // authenticate the user with Sanctum
+        Sanctum::actingAs($user, ['*']);
         // Arrange: Create brand
         $brand = Brand::factory()->create();
 
@@ -63,6 +95,11 @@ class BrandControllerTest extends TestCase
 
     public function test_can_update_brand()
     {
+        // create a user
+        $user = User::factory()->create();
+
+        // authenticate the user with Sanctum
+        Sanctum::actingAs($user, ['*']);
         // Arrange: Create brand
         $brand = Brand::factory()->create();
 
@@ -76,6 +113,11 @@ class BrandControllerTest extends TestCase
 
     public function test_can_delete_brand()
     {
+        // create a user
+        $user = User::factory()->create();
+
+        // authenticate the user with Sanctum
+        Sanctum::actingAs($user, ['*']);
         // Arrange: Create brand
         $brand = Brand::factory()->create();
 

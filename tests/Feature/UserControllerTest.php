@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class UserControllerTest extends TestCase
@@ -13,7 +14,14 @@ class UserControllerTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        // authenticate the user with Sanctum
+        // create a user
+        $user = User::factory()->create();
+
+        // authenticate the user with Sanctum
+        Sanctum::actingAs($user, ['*']);
         // Create seed data
+        $this->artisan('migrate:fresh');
         $this->seed();
     }
 
