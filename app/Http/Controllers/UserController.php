@@ -14,12 +14,13 @@ class UserController extends Controller
      */
     public function index()
     {
+        print "hello from index";
         try {
             $users = User::all();
             return response()->json($users);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '无法获取用户列表'], 500);
+            return response()->json(['error' => 'unable to get users list'], 500);
         }
     }
 
@@ -30,11 +31,12 @@ class UserController extends Controller
     {
         try {
             $validatedData = $request->validate([
+                // validation rules
                 'name' => 'required|max:255',
                 'email' => 'required|email|unique:users',
                 'password' => 'required',
                 'ip_address' => 'nullable|ip',
-                // 其他字段的验证规则...
+                // other validation rules...
             ]);
 
             $validatedData['password'] = Hash::make($validatedData['password']);
@@ -117,5 +119,13 @@ class UserController extends Controller
             Log::error($e->getMessage());
             return response()->json(['error' => '删除用户时发生错误'], 500);
         }
+    }
+    /**
+     * @param  Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function profile(Request $request)
+    {
+        return $request->user();
     }
 }

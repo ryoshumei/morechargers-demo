@@ -11,11 +11,11 @@
                 <div class="rounded-md shadow-sm -space-y-px">
                     <div>
                         <label for="email-address" class="sr-only">Email address</label>
-                        <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address">
+                        <input v-model="email" id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address">
                     </div>
                     <div>
                         <label for="password" class="sr-only">Password</label>
-                        <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password">
+                        <input v-model="password" id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password">
                     </div>
                 </div>
 
@@ -45,21 +45,47 @@
 </template>
 
 <script>
+import { useUserStore } from '@/store/user';
 export default {
+    data() {
+        return {
+            email: '',
+            password: ''
+        };
+    },
     name: 'Login',
     methods: {
         login() {
+            const userStore = useUserStore();
             // 在这里处理登录逻辑
             // 通常是调用一个API，然后根据响应来处理
             console.log('Login form submitted');
-            // 例如:
-            // this.$axios.post('/api/login', { email: this.email, password: this.password })
-            //   .then(response => {
-            //     // 处理成功的登录
-            //   })
-            //   .catch(error => {
-            //     // 处理错误
-            //   });
+            console.log('Login form submitted2');
+            this.$axios.get('/backend/sanctum/csrf-cookie').then(response => {
+                // Login...
+                console.log(response);
+                // CSRF token is set, now you can make a login request
+                this.$axios.post('/backend/api/v1/public/login', {
+                    // id="email-address"
+                    email: this.email,
+                    password: this.password
+                }).then(response => {
+                    console.log('Login successful', response);
+                    // Handle successful login
+                    userStore.setLoggedIn(true); // set user as logged in
+                    // Redirect user to home page
+                    this.$router.push('/');
+                }).catch(error => {
+                    console.error('Login error', error);
+                    // Handle login errors, e.g., show an error message
+                    alert('Login failed. Please try again.');
+
+
+                });
+            }).catch(error => {
+                console.error('CSRF token retrieval error', error);
+                // Handle CSRF token retrieval error
+            });
         }
     }
 };

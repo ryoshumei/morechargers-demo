@@ -122,4 +122,22 @@ class DesiredLocationController extends Controller
             return response()->json(['error' => '删除期望位置时发生错误'], 500);
         }
     }
+
+    public function mapCoordinates(){
+        try {
+            $desiredLocations = DesiredLocation::all();
+            $coordinates = [];
+            foreach ($desiredLocations as $desiredLocation) {
+                // add coordinates to array
+                $coordinates[] = [
+                    'latitude' => $desiredLocation->latitude,
+                    'longitude' => $desiredLocation->longitude,
+                ];
+            }
+            return response()->json($coordinates);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'could not get coordinates'], 500);
+        }
+    }
 }

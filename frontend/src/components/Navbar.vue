@@ -1,6 +1,6 @@
 <template>
     <Disclosure as="nav" class="bg-gray-800" v-slot="{ open }">
-        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 z-50">
             <div class="relative flex h-16 items-center justify-between">
                 <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
                     <!-- Mobile menu button-->
@@ -12,8 +12,9 @@
                     </DisclosureButton>
                 </div>
                 <div class="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                    <div class="flex flex-shrink-0 items-center">
-                        <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />
+                    <div class="flex flex-shrink-0 items-center text-white">
+                        DEMO:morechargers
+<!--                        <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company" />-->
                     </div>
                     <div class="hidden sm:ml-6 sm:block">
                         <div class="flex space-x-4">
@@ -23,19 +24,19 @@
                 </div>
                 <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
 
-                    <!-- 用户未登录时显示的按钮 -->
-                    <div v-if="!userLoggedIn" class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    <!-- when user not logged in -->
+                    <div v-if="!userStore.loggedIn" class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         <a href="/login" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Login</a>
                         <a href="/signup" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Signup</a>
                     </div>
-
+                    <!-- when user logged in  -->
                     <!-- Profile dropdown -->
-                    <div v-else class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                        <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                            <span class="absolute -inset-1.5" />
-                            <span class="sr-only">View notifications</span>
-                            <BellIcon class="h-6 w-6" aria-hidden="true" />
-                        </button>
+                    <div v-else class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0 z-50">
+<!--                        <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">-->
+<!--                            <span class="absolute -inset-1.5" />-->
+<!--                            <span class="sr-only">View notifications</span>-->
+<!--                            <BellIcon class="h-6 w-6" aria-hidden="true" />-->
+<!--                        </button>-->
                         <!-- Profile dropdown -->
                         <Menu as="div" class="ml-3 relative">
                             <div>
@@ -53,7 +54,7 @@
                                         <a href="/settings" :class="{ 'bg-gray-100': active }" class="block px-4 py-2 text-sm text-gray-700">Settings</a>
                                     </MenuItem>
                                     <MenuItem v-slot="{ active }">
-                                        <a href="/logout" :class="{ 'bg-gray-100': active }" class="block px-4 py-2 text-sm text-gray-700">Sign out</a>
+                                        <button @click="logout" :class="{ 'bg-gray-100': active }" class="block px-4 py-2 text-sm text-gray-700">Sign out</button>
                                     </MenuItem>
                                 </MenuItems>
                             </Transition>
@@ -75,15 +76,20 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { Transition } from 'vue';
-import { ref } from 'vue'
+import { useUserStore } from '@/store/user';
 
 // 这个变量应该根据你的认证逻辑或状态管理库(Vuex, Pinia等)来动态设置
-const userLoggedIn = ref(false);
+const userStore = useUserStore();
+
 
 const navigation = [
-    { name: 'Dashboard', href: '#', current: true },
-    { name: 'Team', href: '#', current: false },
+    { name: 'Home', href: '/', current: false },
+    { name: 'Dashboard', href: '#', current: false },
     { name: 'Projects', href: '#', current: false },
     { name: 'Calendar', href: '#', current: false },
 ]
+const logout = () => {
+    // 在这里处理登出逻辑
+    userStore.setLoggedOut();
+};
 </script>

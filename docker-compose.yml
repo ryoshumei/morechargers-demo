@@ -7,6 +7,10 @@ services:
         ports:
             - "3000:3000"
         command: npm run dev
+        depends_on:
+            - laravel_api
+        networks:
+            - sail
     laravel_api:
         build:
             context: ./docker/8.2

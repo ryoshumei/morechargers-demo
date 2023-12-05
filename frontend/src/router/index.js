@@ -5,6 +5,7 @@ import Login from '../views/Login.vue';
 import Home from '../views/Home.vue'; // 确保正确引入了 Home 组件
 import Signup from "../views/Signup.vue";
 import Data from "../views/Data.vue";
+import Profile from "../views/Profile.vue";
 
 // 定义路由
 // 每个路由都需要映射到一个组件
@@ -28,7 +29,12 @@ const routes = [
         path: '/data',
         name: 'Data',
         component: Data,
-    }
+    },
+    {
+        path: '/profile',
+        name: 'Profile',
+        component: Profile,
+    },
     // ...其他路由
 ];
 

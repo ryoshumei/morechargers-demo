@@ -54,4 +54,13 @@ class User extends Authenticatable
     public function desiredLocations(){
         return $this->hasMany(DesiredLocation::class);
     }
+
+    // check if user has role
+    /**
+     * @param  string  $role
+     * @return bool
+     */
+    public function hasRole($role){
+        return $this->user_role === $role;
+    }
 }

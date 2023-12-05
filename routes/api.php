@@ -32,7 +32,7 @@ Route::prefix('v1')->group(function (){
 
         Route::get('brand', [BrandController::class, 'index']);
         Route::get('chargertype', [ChargerTypeController::class, 'index']);
-        Route::get('desired-location', [DesiredLocationController::class, 'index']);
+        Route::get('map-coordinates', [DesiredLocationController::class, 'mapCoordinates']);
         Route::post('feedback', [FeedbackController::class, 'store']);
         Route::get('provider-company', [ProviderCompanyController::class, 'index']);
         Route::get('vehicle-model', [VehicleModelController::class, 'index']);
@@ -42,10 +42,7 @@ Route::prefix('v1')->group(function (){
     // private routes
     Route::middleware('auth:sanctum')->group(function (){
         Route::prefix('private')->group(function (){
-            Route::get('/user', function (Request $request) {
-                return $request->user();
-            });
-
+            Route::get('/user/profile', [UserController::class, 'profile']);
 
             // with role admin
             Route::middleware('role:admin')->group(function (){
