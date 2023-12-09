@@ -19,8 +19,8 @@ class DatabaseSeeder extends Seeder
             ProviderCompanySeeder::class,
             FeedbackSeeder::class,
             UserSeeder::class,
-            DesiredLocationSeeder::class,
             ProviderCompanyChargerTypeSeeder::class,
+            DesiredLocationSeeder::class,
         ]);
     }
 }

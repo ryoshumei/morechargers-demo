@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -30,21 +31,29 @@ class UserController extends Controller
     public function store(Request $request)
     {
         try {
-            $validatedData = $request->validate([
-                // validation rules
+            $requestData  = $request->all();
+            $requestData['ip_address'] = $request->ip();
+            $requestData['account_type'] = 'signed_up';
+            Log::info('Request data with IP:', $requestData);
+
+            $validatedData = Validator::make($requestData, [
                 'name' => 'required|max:255',
                 'email' => 'required|email|unique:users',
                 'password' => 'required',
-                'ip_address' => 'nullable|ip',
-                // other validation rules...
-            ]);
+                'userRole' => 'required|in:user,provider',
+                'ip_address' => 'required|ip',
+                'account_type' => 'required|in:anonymous,signed_up,google',
+            ])->validated();
 
             $validatedData['password'] = Hash::make($validatedData['password']);
-
+            Log::info('validatedData:', $validatedData);
             $user = User::create($validatedData);
             return response()->json($user, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error($e->getMessage());
+            Log::error('Validation error: ' . $e->getMessage());
+            Log::error('Validation errors: ', $e->errors());
+            Log::error('All Request Data: ', $validatedData);
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error($e->getMessage());

@@ -28,7 +28,7 @@ Route::prefix('v1')->group(function (){
         Route::post('login', [LoginController::class, 'login']);
         Route::post('logout', [LoginController::class, 'logout']);
         // todo: register
-        Route::post('register', [LoginController::class, 'register']);
+        Route::post('register', [UserController::class, 'store']);
 
         Route::get('brand', [BrandController::class, 'index']);
         Route::get('chargertype', [ChargerTypeController::class, 'index']);

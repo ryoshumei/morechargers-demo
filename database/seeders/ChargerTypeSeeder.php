@@ -13,6 +13,6 @@ class ChargerTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        ChargerType::factory()->count(10)->create();
+//        ChargerType::factory()->count(10)->create();
     }
 }

@@ -23,16 +23,28 @@ class DesiredLocationFactory extends Factory
      */
     public function definition(): array
     {
+        // 随机选择一个 Brand 实例及其关联的 VehicleModel
+        // random select a Brand instance and its related VehicleModel
+        $brand = Brand::inRandomOrder()->first() ?? Brand::factory()->create();
+        $vehicleModel = $brand->vehicleModels()->inRandomOrder()->first() ?? VehicleModel::factory()->create(['brand_id' => $brand->id]);
+
+        // 确保至少存在一个 ChargerType 和 ProviderCompany，并且它们之间有关联
+        $chargerType = ChargerType::inRandomOrder()->first() ?? ChargerType::factory()->create();
+        $providerCompany = ProviderCompany::inRandomOrder()->first() ?? ProviderCompany::factory()->create();
+
+        // 确保 ChargerType 和 ProviderCompany 之间有关联
+        $chargerType->providerCompanies()->syncWithoutDetaching($providerCompany->id);
         return [
-            'latitude' => $this->faker->latitude,
-            'longitude' => $this->faker->longitude,
+            // create 10 desired locations in japan with different latitude and longitude
+            'latitude' => $this->faker->latitude(35.69167, 36.69167),
+            'longitude' => $this->faker->longitude(132.68944, 140.68944),
             'hope_radius' => $this->faker->numberBetween(1, 100),
             'has_ev_car' => $this->faker->boolean,
-            'brand_id' => Brand::factory(),
-            'model_id' => VehicleModel::factory(),
-            'charger_type_id' => ChargerType::factory(),
-            'provider_company_id' => ProviderCompany::factory(),
-            'user_id' => User::factory(),
+            'brand_id' => $brand->id,
+            'model_id' => $vehicleModel->id,
+            'charger_type_id' => $chargerType->id,
+            'provider_company_id' => $providerCompany->id,
+            'user_id' => User::inRandomOrder()->first()->id ?? User::factory()->create()->id,
             'comment' => $this->faker->sentence,
         ];
     }

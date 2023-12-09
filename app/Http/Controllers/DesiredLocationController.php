@@ -31,7 +31,7 @@ class DesiredLocationController extends Controller
         //
         try {
             $validatedData = $request->validate([
-                // 添加验证规则
+                // add validation rules
                 'latitude' => 'required|numeric',
                 'longitude' => 'required|numeric',
                 'hope_radius' => 'required|integer',
