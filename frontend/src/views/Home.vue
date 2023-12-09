@@ -1,35 +1,51 @@
 <template>
-    <div class="flex-grow mb-16">
-        <Map :coordinates="mapCoordinates"/>
+    <div class="flex flex-row h-full">
+        <div class="flex-grow h-full">
+            <Map :markers="mapCoordinates" @clickedPositionEvent="handleUpdatePosition"/>
+        </div>
+        <div class="w-1/3">
+            <Survey :clickedPosition="clickedPosition" />
+        </div>
     </div>
 </template>
 
-<script setup>
-import Map from '@/components/Map.vue'; // 使用 @ 符号作为 src 目录的别名
+<script>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import Map from '../components/Map.vue';  //use @ to represent the src folder
+import Survey from "../components/Survey.vue";
 
-const mapCoordinates = ref([]);
-
-const fetchMapData = async () => {
-    try {
-        const response = await axios.get('/backend/api/v1/public/map-coordinates');
-        mapCoordinates.value = response.data;
-    } catch (error) {
-        console.error('Error fetching map data:', error);
+export default {
+    components: {
+        Map,
+        Survey
+    },
+    data() {
+        return {
+            clickedPosition: null, // initialize clickedPosition to null
+            mapCoordinates: []
+        }
+    },
+    methods: {
+        handleUpdatePosition(position) {
+            console.log('handleUpdatePosition called in Home.vue');
+            // 更新父组件的 clickedPosition 数据
+            this.clickedPosition = position;
+        },
+        async fetchMapData() {
+            try {
+                const response = await axios.get('/backend/api/v1/public/map-coordinates');
+                this.mapCoordinates = response.data;
+            } catch (error) {
+                console.error('Error fetching map data:', error);
+            }
+        }
+    },
+    mounted() {
+        this.fetchMapData();
     }
+
 };
-
-onMounted(fetchMapData);
-// 此处不需要使用 export default
-// not need to use export default here
-// 如果你需要定义组件的名称，可以使用 defineComponent 函数
-// If you need to define the name of the component, you can use the defineComponent function
-
-// add data, methods
-
-
-
 </script>
 
 <style scoped>

@@ -32,6 +32,7 @@ export default {
             axios.get('/backend/api/v1/private/user/profile')
                 .then(response => {
                     this.user = response.data;
+                    console.log(this.user);
                 })
                 .catch(error => {
                     console.error('Error fetching user profile:', error);

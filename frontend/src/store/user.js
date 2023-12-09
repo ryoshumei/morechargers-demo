@@ -4,6 +4,7 @@ import { defineStore } from 'pinia';
 export const useUserStore = defineStore('user', {
     state: () => ({
         loggedIn: false,
+        role: '',
     }),
     actions: {
         setLoggedIn() {
@@ -16,6 +17,13 @@ export const useUserStore = defineStore('user', {
         },
         checkLoginStatus() {
             this.loggedIn = localStorage.getItem('loggedIn') === 'true';
+        },
+        setRole(role) {
+            this.role = role;
+            localStorage.setItem('role', role);
+        },
+        getRole() {
+            this.role = localStorage.getItem('role');
         },
     }
 });

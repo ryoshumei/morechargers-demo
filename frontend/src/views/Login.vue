@@ -46,11 +46,13 @@
 
 <script>
 import { useUserStore } from '@/store/user';
+import axios from "axios";
 export default {
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
+            role: ''
         };
     },
     name: 'Login',
@@ -71,10 +73,15 @@ export default {
                     password: this.password
                 }).then(response => {
                     console.log('Login successful', response);
+                    userStore.setLoggedIn(true);
                     // Handle successful login
-                    userStore.setLoggedIn(true); // set user as logged in
-                    // Redirect user to home page
-                    this.$router.push('/');
+                    this.getUserRole().then(role => {
+                        userStore.setRole(role);
+                        this.$router.push('/');
+                    }).catch(error => {
+                        console.error('Error setting user role:', error);
+                        // 这里处理角色设置失败的情况
+                    });
                 }).catch(error => {
                     console.error('Login error', error);
                     // Handle login errors, e.g., show an error message
@@ -86,6 +93,18 @@ export default {
                 console.error('CSRF token retrieval error', error);
                 // Handle CSRF token retrieval error
             });
+
+        },
+        // get user role
+        getUserRole() {
+            return axios.get('/backend/api/v1/private/user/profile')
+                .then(response => {
+                    return response.data.user_role;
+                })
+                .catch(error => {
+                    console.error('Error fetching user role:', error);
+                    throw error;
+                });
         }
     }
 };
