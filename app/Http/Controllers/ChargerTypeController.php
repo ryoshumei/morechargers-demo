@@ -114,7 +114,7 @@ class ChargerTypeController extends Controller
     /**
      * fetch charger type by charger type id
      */
-    public function fetchByChargerTypeId($id)
+    public function fetchByCompanyId($id)
     {
         try {
             // find ProviderCompany by id by eloquent

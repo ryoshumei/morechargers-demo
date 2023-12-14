@@ -25,20 +25,20 @@ class FeedbackControllerTest extends TestCase
         // Create seed data
         $this->seed();
     }
-
-    public function test_can_retrieve_feedback()
-    {
-        // Arrange: Create some feedback
-        $feedback = Feedback::factory()->create();
-        dump($feedback);
-        // Act: Make request
-        $response = $this->getJson('/api/v1/feedback');
-
-        // Assert: Assert that feedback data is seen
-        $response->assertStatus(200)
-            ->assertJsonFragment(['text' => $feedback->text]);
-    }
-
+    // not used currently
+//    public function test_can_retrieve_feedback()
+//    {
+//        // Arrange: Create some feedback
+//        $feedback = Feedback::factory()->create();
+//        dump($feedback);
+//        // Act: Make request
+//        $response = $this->getJson('/api/v1/feedback');
+//
+//        // Assert: Assert that feedback data is seen
+//        $response->assertStatus(200)
+//            ->assertJsonFragment(['text' => $feedback->text]);
+//    }
+//
     public function test_can_create_feedback()
     {
         // Arrange: Prepare data
@@ -48,53 +48,53 @@ class FeedbackControllerTest extends TestCase
             ];
 
         // Act: Make request
-        $response = $this->postJson('/api/v1/feedback', $data);
+        $response = $this->postJson('/api/v1/public/feedback', $data);
 
         // Assert: Assert that feedback is created
         $response->assertStatus(201)
             ->assertJsonFragment(['text' => 'Test text']);
         $this->assertDatabaseHas('feedback', ['text' => 'Test text']);
     }
-
-    public function test_can_show_feedback()
-    {
-        // Arrange: Create feedback
-        $feedback = Feedback::factory()->create();
-
-        // Act: Make request
-        $response = $this->getJson("/api/v1/feedback/{$feedback->id}");
-
-        // Assert: Assert that feedback data is seen
-        $response->assertStatus(200)
-            ->assertJsonFragment(['text' => $feedback->text]);
-    }
-
-    public function test_can_update_feedback()
-    {
-        // Arrange: Create feedback
-        $feedback = Feedback::factory()->create();
-
-        // Act: Update feedback
-        $response = $this->putJson("/api/v1/feedback/{$feedback->id}", ['text' => 'New Text']);
-
-        // Assert: Assert that feedback is updated
-        $response->assertStatus(200)
-            ->assertJsonFragment(['text' => 'New Text']);
-        $this->assertDatabaseHas('feedback', ['text' => 'New Text']);
-    }
-
-    public function test_can_delete_feedback()
-    {
-        // Arrange: Create feedback
-        $feedback = Feedback::factory()->create();
-
-        // Act: Delete feedback
-        $response = $this->deleteJson("/api/v1/feedback/{$feedback->id}");
-
-        // Assert: Assert that feedback is deleted
-        $response->assertStatus(204);
-        $this->assertDatabaseMissing('feedback', ['id' => $feedback->id]);
-    }
+//
+//    public function test_can_show_feedback()
+//    {
+//        // Arrange: Create feedback
+//        $feedback = Feedback::factory()->create();
+//
+//        // Act: Make request
+//        $response = $this->getJson("/api/v1/feedback/{$feedback->id}");
+//
+//        // Assert: Assert that feedback data is seen
+//        $response->assertStatus(200)
+//            ->assertJsonFragment(['text' => $feedback->text]);
+//    }
+//
+//    public function test_can_update_feedback()
+//    {
+//        // Arrange: Create feedback
+//        $feedback = Feedback::factory()->create();
+//
+//        // Act: Update feedback
+//        $response = $this->putJson("/api/v1/feedback/{$feedback->id}", ['text' => 'New Text']);
+//
+//        // Assert: Assert that feedback is updated
+//        $response->assertStatus(200)
+//            ->assertJsonFragment(['text' => 'New Text']);
+//        $this->assertDatabaseHas('feedback', ['text' => 'New Text']);
+//    }
+//
+//    public function test_can_delete_feedback()
+//    {
+//        // Arrange: Create feedback
+//        $feedback = Feedback::factory()->create();
+//
+//        // Act: Delete feedback
+//        $response = $this->deleteJson("/api/v1/feedback/{$feedback->id}");
+//
+//        // Assert: Assert that feedback is deleted
+//        $response->assertStatus(204);
+//        $this->assertDatabaseMissing('feedback', ['id' => $feedback->id]);
+//    }
 
 
 

@@ -18,7 +18,9 @@ class DesiredLocationControllerTest extends TestCase
         parent::setUp();
         // authenticate the user with Sanctum
         // create a user
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'user_role' => 'admin'
+        ]);
 
         // authenticate the user with Sanctum
         Sanctum::actingAs($user, ['*']);
@@ -32,7 +34,7 @@ class DesiredLocationControllerTest extends TestCase
         $desiredLocation = DesiredLocation::factory()->create();
 
         // Act: Make request
-        $response = $this->getJson('/api/v1/desired-location');
+        $response = $this->getJson('/api/v1/private/desired-location');
 
         // Assert: Assert that desired_location data is seen
         $response->assertStatus(200)
@@ -54,18 +56,18 @@ class DesiredLocationControllerTest extends TestCase
         $data = [
             'latitude' => 1.0,
             'longitude' => 1.0,
-            'hope_radius' => 10,
-            'has_ev_car' => false,  // add default values for other fields
-            'brand_id' => $brand_id,
-            'model_id' => $model_id,
-            'charger_type_id' => $charger_type_id,
-            'provider_company_id' => $provider_company_id,
+            'radius' => 10,
+            'hasEv' => false,  // add default values for other fields
+            'evBrandId' => $brand_id,
+            'evModel' => $model_id,
+            'chargerType' => $charger_type_id,
+            'providerCompany' => $provider_company_id,
             'user_id' => $user_id,
             'comment' => 'Test comment',
         ];
 
         // Act: Make request
-        $response = $this->postJson('/api/v1/desired-location', $data);
+        $response = $this->postJson('/api/v1/public/survey', $data);
 
         // Assert: Assert that desired_location is created
         $response->assertStatus(201)
@@ -73,45 +75,46 @@ class DesiredLocationControllerTest extends TestCase
         $this->assertDatabaseHas('desired_locations', ['latitude' => 1.0]);
     }
 
-    public function test_can_show_desired_location()
-    {
-        // Arrange: Create desired_location
-        $desiredLocation = DesiredLocation::factory()->create();
+    // not used currently
+//    public function test_can_show_desired_location()
+//    {
+//        // Arrange: Create desired_location
+//        $desiredLocation = DesiredLocation::factory()->create();
+//
+//        // Act: Make request
+//        $response = $this->getJson("/api/v1/desired-location/{$desiredLocation->id}");
+//
+//        // Assert: Assert that desired_location data is seen
+//        $response->assertStatus(200)
+//            ->assertJsonFragment(['latitude' => $desiredLocation->latitude]);
+//    }
 
-        // Act: Make request
-        $response = $this->getJson("/api/v1/desired-location/{$desiredLocation->id}");
+//    public function test_can_update_desired_location()
+//    {
+//        // Arrange: Create desired_location
+//        $desiredLocation = DesiredLocation::factory()->create();
+//
+//        // Act: Update desired_location
+//        $response = $this->putJson("/api/v1/desired-location/{$desiredLocation->id}", [
+//            'latitude' => 2.0,
+//            'longitude' => 2.0,
+//        ]);
+//
+//        // Assert: Assert that desired_location is updated
+//        $response->assertStatus(200)
+//            ->assertJsonFragment(['latitude' => 2.0]);
+//        $this->assertDatabaseHas('desired_locations', ['latitude' => 2.0]);
+//    }
 
-        // Assert: Assert that desired_location data is seen
-        $response->assertStatus(200)
-            ->assertJsonFragment(['latitude' => $desiredLocation->latitude]);
-    }
-
-    public function test_can_update_desired_location()
-    {
-        // Arrange: Create desired_location
-        $desiredLocation = DesiredLocation::factory()->create();
-
-        // Act: Update desired_location
-        $response = $this->putJson("/api/v1/desired-location/{$desiredLocation->id}", [
-            'latitude' => 2.0,
-            'longitude' => 2.0,
-        ]);
-
-        // Assert: Assert that desired_location is updated
-        $response->assertStatus(200)
-            ->assertJsonFragment(['latitude' => 2.0]);
-        $this->assertDatabaseHas('desired_locations', ['latitude' => 2.0]);
-    }
-
-    public function test_can_delete_desired_location()
-    {
-        // Arrange: Create desired_location
-        $desiredLocation = DesiredLocation::factory()->create();
-        // Act: Delete
-        $response = $this->deleteJson("/api/v1/desired-location/{$desiredLocation->id}");
-        // Assert: Assert that desired_location is deleted
-        $response->assertStatus(204);
-        $this->assertDatabaseMissing('desired_locations', ['id' => $desiredLocation->id]);
-    }
+//    public function test_can_delete_desired_location()
+//    {
+//        // Arrange: Create desired_location
+//        $desiredLocation = DesiredLocation::factory()->create();
+//        // Act: Delete
+//        $response = $this->deleteJson("/api/v1/desired-location/{$desiredLocation->id}");
+//        // Assert: Assert that desired_location is deleted
+//        $response->assertStatus(204);
+//        $this->assertDatabaseMissing('desired_locations', ['id' => $desiredLocation->id]);
+//    }
 
 }

@@ -24,49 +24,40 @@ class UserControllerTest extends TestCase
         $this->artisan('migrate:fresh');
         $this->seed();
     }
-
+    // not used currently
     // test to see if the user can be retrieved
-    public function test_can_retrieve_users()
-    {
-        // Arrange: Create some users
-        $user = User::factory()->create();
-
-        // Act: Make request
-        $response = $this->getJson('/api/v1/user');
-
-        // Assert: Assert that user data is seen
-        $response->assertStatus(200)
-            ->assertJsonFragment(['name' => $user->name]);
-    }
+//    public function test_can_retrieve_users()
+//    {
+//        // Arrange: Create some users
+//        $user = User::factory()->create();
+//
+//        // Act: Make request
+//        $response = $this->getJson('/api/v1/user');
+//
+//        // Assert: Assert that user data is seen
+//        $response->assertStatus(200)
+//            ->assertJsonFragment(['name' => $user->name]);
+//    }
 
     // test to see if the user can be created
     public function test_can_create_user()
     {
         // Arrange: Prepare data
         $data = [
-            'name' => 'Test name',
-            'email' => 'test@test.com',
-            'password' => 'Test password',
-            'phone' => 'Test phone',
-            'address' => 'Test address',
-            'city' => 'Test city',
-            'state' => 'Test state',
-            'zip' => 'Test zip',
-            'country' => 'Test country',
-            'latitude' => 'Test latitude',
-            'longitude' => 'Test longitude',
-            'comment' => 'Test comment',
-            'ip_address' => '192.168.0.1',
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'password' => 'password',
+            'userRole' => 'user'
 
         ];
 
         // Act: Make request
-        $response = $this->postJson('/api/v1/user', $data);
+        $response = $this->postJson('/api/v1/public/register', $data);
 
         // Assert: Assert that user is created
         $response->assertStatus(201)
-            ->assertJsonFragment(['name' => 'Test name']);
-        $this->assertDatabaseHas('users', ['name' => 'Test name']);
+            ->assertJsonFragment(['name' => 'Test User']);
+        $this->assertDatabaseHas('users', ['name' => 'Test User']);
     }
 
     // test to see if the user can be shown
@@ -76,7 +67,7 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
 
         // Act: Make request
-        $response = $this->getJson("/api/v1/user/{$user->id}");
+        $response = $this->actingAs($user)->getJson("/api/v1/private/user/profile");
 
         // Assert: Assert that user data is seen
         $response->assertStatus(200)
@@ -90,9 +81,8 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
 
         // Act: Update user
-        $response = $this->putJson("/api/v1/user/{$user->id}", [
+        $response = $this->actingAs($user)->patchJson("/api/v1/private/user/profile", [
             'name' => 'New Name',
-            'email' => $user->email,
         ]);
 
         // Assert: Assert that user is updated
@@ -108,7 +98,7 @@ class UserControllerTest extends TestCase
         $user = User::factory()->create();
 
         // Act: Delete user
-        $response = $this->deleteJson("/api/v1/user/{$user->id}");
+        $response = $this->actingAs($user)->deleteJson("/api/v1/private/user/");
 
         // Assert: Assert that user is deleted
         $response->assertStatus(204);
