@@ -18,7 +18,7 @@ class FeedbackController extends Controller
             return response()->json($feedbacks);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '无法获取反馈列表'], 500);
+            return response()->json(['error' => 'unable to list feedbacks'], 500);
         }
     }
 
@@ -42,7 +42,7 @@ class FeedbackController extends Controller
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '创建反馈时发生错误'], 500);
+            return response()->json(['error' => 'unable to create feedback'], 500);
         }
     }
 
@@ -56,10 +56,10 @@ class FeedbackController extends Controller
             return response()->json($feedback);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到反馈'], 404);
+            return response()->json(['error' => 'unable to find feedback'], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '获取反馈信息时发生错误'], 500);
+            return response()->json(['error' => 'error when getting feedback'], 500);
         }
     }
 
@@ -85,10 +85,10 @@ class FeedbackController extends Controller
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到反馈'], 404);
+            return response()->json(['error' => 'unable to find feedback'], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '更新反馈时发生错误'], 500);
+            return response()->json(['error' => 'error when finding feedback'], 500);
         }
     }
 
@@ -103,10 +103,10 @@ class FeedbackController extends Controller
             return response()->json(null, 204);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到反馈'], 404);
+            return response()->json(['error' => 'unable to find feedback'], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '删除反馈时发生错误'], 500);
+            return response()->json(['error' => 'error when deleting feedback'], 500);
         }
     }
 }
