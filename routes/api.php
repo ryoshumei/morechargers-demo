@@ -30,7 +30,7 @@ Route::prefix('v1')->group(function (){
         Route::post('register', [UserController::class, 'store']);
         Route::post('survey', [DesiredLocationController::class, 'store']);
         Route::get('brands', [BrandController::class, 'index']);
-        Route::get('charger-types/{chargerTypeId}', [ChargerTypeController::class, 'fetchByChargerTypeId']);
+        Route::get('charger-types/{companyId}', [ChargerTypeController::class, 'fetchByCompanyId']);
         Route::get('map-coordinates', [DesiredLocationController::class, 'mapCoordinates']);
         Route::post('feedback', [FeedbackController::class, 'store']);
         Route::get('provider-company', [ProviderCompanyController::class, 'index']);
