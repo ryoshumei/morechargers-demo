@@ -14,6 +14,8 @@ export const useUserStore = defineStore('user', {
         setLoggedOut() {
             this.loggedIn = false;
             localStorage.setItem('loggedIn', 'false');
+            this.setRole('');
+            localStorage.setItem('role', '');
         },
         checkLoginStatus() {
             this.loggedIn = localStorage.getItem('loggedIn') === 'true';
