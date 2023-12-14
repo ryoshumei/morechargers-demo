@@ -27,15 +27,14 @@ Route::prefix('v1')->group(function (){
     Route::prefix('public')->group(function (){
         Route::post('login', [LoginController::class, 'login']);
         Route::post('logout', [LoginController::class, 'logout']);
-        // todo: register
         Route::post('register', [UserController::class, 'store']);
-
-        Route::get('brand', [BrandController::class, 'index']);
-        Route::get('chargertype', [ChargerTypeController::class, 'index']);
+        Route::post('survey', [DesiredLocationController::class, 'store']);
+        Route::get('brands', [BrandController::class, 'index']);
+        Route::get('charger-types/{chargerTypeId}', [ChargerTypeController::class, 'fetchByChargerTypeId']);
         Route::get('map-coordinates', [DesiredLocationController::class, 'mapCoordinates']);
         Route::post('feedback', [FeedbackController::class, 'store']);
         Route::get('provider-company', [ProviderCompanyController::class, 'index']);
-        Route::get('vehicle-model', [VehicleModelController::class, 'index']);
+        Route::get('vehicle-models/{brandId}', [VehicleModelController::class, 'fetchByBrandId']);
     });
 
     // predix private routes
@@ -43,37 +42,37 @@ Route::prefix('v1')->group(function (){
     Route::middleware('auth:sanctum')->group(function (){
         Route::prefix('private')->group(function (){
             Route::get('/user/profile', [UserController::class, 'profile']);
+            Route::patch('/user/profile', [UserController::class, 'update']);
+            Route::delete('/user', [UserController::class, 'destroy']);
+            Route::post('feedback', [FeedbackController::class, 'store']);
+
+            // with role admin, provider
+            Route::middleware('role:admin, provider')->group(function (){
+                Route::get('desired-location', [DesiredLocationController::class, 'index']);
+            });
 
             // with role admin
             Route::middleware('role:admin')->group(function (){
-                Route::apiResource('brand', BrandController::class);
-                Route::apiResource('chargertype', ChargerTypeController::class);
-                Route::apiResource('desired-location', DesiredLocationController::class);
-                Route::apiResource('feedback', FeedbackController::class);
-                Route::apiResource('provider-company', ProviderCompanyController::class);
-                Route::apiResource('user', UserController::class);
-                Route::apiResource('vehicle-model', VehicleModelController::class);
+                Route::get('/users/count', [UserController::class, 'count']);
+                Route::get('/surveys/count', [DesiredLocationController::class, 'count']);
+                Route::get('/providers/count', [ProviderCompanyController::class, 'count']);
             });
+
+            // not used currently
             // with role user
-            Route::middleware('role:user')->group(function (){
-                Route::get('brand', [BrandController::class, 'index']);
-                Route::get('chargertype', [ChargerTypeController::class, 'index']);
-                Route::get('desired-location', [DesiredLocationController::class, 'index']);
-                Route::post('feedback', [FeedbackController::class, 'store']);
-                Route::get('provider-company', [ProviderCompanyController::class, 'index']);
-                Route::get('vehicle-model', [VehicleModelController::class, 'index']);
+//            Route::middleware('role:user')->group(function (){
+//                Route::get('brand', [BrandController::class, 'index']);
+//                Route::get('chargertype', [ChargerTypeController::class, 'index']);
+//                Route::get('provider-company', [ProviderCompanyController::class, 'index']);
+//                Route::get('vehicle-model', [VehicleModelController::class, 'index']);
+//                Route::get('user/{id}/desired-location', [UserController::class, 'getDesiredLocation']);
+//                Route::post('user/{id}/desired-location', [UserController::class, 'setDesiredLocation']);
+//            });
 
-                Route::get('user/{id}/desired-location', [UserController::class, 'getDesiredLocation']);
-                Route::post('user/{id}/desired-location', [UserController::class, 'setDesiredLocation']);
-            });
+            // not used currently
             // with role provider
-            Route::middleware('role:provider')->group(function (){
-                Route::get('desired-location', [DesiredLocationController::class, 'index']);
-                Route::post('feedback', [FeedbackController::class, 'store']);
-
-                Route::get('user/{id}/provider-company', [UserController::class, 'getProviderCompany']);
-                Route::post('user/{id}/provider-company', [UserController::class, 'setProviderCompany']);
-            });
+//            Route::middleware('role:provider')->group(function (){
+//            });
         });
 
     });
