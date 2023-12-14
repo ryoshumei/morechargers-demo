@@ -50,9 +50,9 @@
                                     <MenuItem v-slot="{ active }">
                                         <a href="/profile" :class="{ 'bg-gray-100': active }" class="block px-4 py-2 text-sm text-gray-700">Your Profile</a>
                                     </MenuItem>
-                                    <MenuItem v-slot="{ active }">
-                                        <a href="/settings" :class="{ 'bg-gray-100': active }" class="block px-4 py-2 text-sm text-gray-700">Settings</a>
-                                    </MenuItem>
+<!--                                    <MenuItem v-slot="{ active }">-->
+<!--                                        <a href="/settings" :class="{ 'bg-gray-100': active }" class="block px-4 py-2 text-sm text-gray-700">Account Setting</a>-->
+<!--                                    </MenuItem>-->
                                     <MenuItem v-slot="{ active }">
                                         <button @click="logout" :class="{ 'bg-gray-100': active }" class="block px-4 py-2 text-sm text-gray-700">Sign out</button>
                                     </MenuItem>
@@ -75,21 +75,44 @@
 <script setup>
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/vue/24/outline'
-import { Transition } from 'vue';
+import {onMounted, ref, Transition, watch} from 'vue';
 import { useUserStore } from '@/store/user';
+import axios from "axios";
 
-// 这个变量应该根据你的认证逻辑或状态管理库(Vuex, Pinia等)来动态设置
 const userStore = useUserStore();
-
-
-const navigation = [
+const navigation = ref([
     { name: 'Home', href: '/', current: false },
-    { name: 'Dashboard', href: '#', current: false },
-    { name: 'Projects', href: '#', current: false },
-    { name: 'Calendar', href: '#', current: false },
-]
+
+]);
+const updateNavigation = () => {
+    userStore.checkLoginStatus();
+    userStore.getRole();
+    // remove dashboard and survey data from navigation bar
+    navigation.value = navigation.value.filter(item => item.name !== 'Dashboard' && item.name !== 'Survey Data');
+    // show different navigation bar based on user role
+    if (userStore.role === 'admin') {
+        navigation.value.push({ name: 'Dashboard', href: '/dashboard', current: false });
+    }
+    if (userStore.role === 'provider') {
+        navigation.value.push({ name: 'Survey Data', href: '/data', current: false });
+    }
+};
+// watch user role change
+watch(() => userStore.role, () => {
+    updateNavigation();
+}, { immediate: true });
 const logout = () => {
-    // 在这里处理登出逻辑
-    userStore.setLoggedOut();
+    // post logout request to backend
+    axios.post('/backend/api/v1/public/logout')
+        .then(response => {
+            // set user as logged out
+            userStore.setLoggedOut();
+            console.log(response);
+            // redirect to login page
+            window.location.href = '/';
+        })
+        .catch(error => {
+            console.log(error);
+        });
 };
 </script>
