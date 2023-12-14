@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChargerType;
+use App\Models\ProviderCompany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -108,6 +109,26 @@ class ChargerTypeController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return response()->json(['error' => '删除充电器类型时发生错误'], 500);
+        }
+    }
+    /**
+     * fetch charger type by charger type id
+     */
+    public function fetchByChargerTypeId($id)
+    {
+        try {
+            // find ProviderCompany by id by eloquent
+            $providerCompany = ProviderCompany::find($id);
+            if (!$providerCompany) {
+                return response()->json(['error' => 'not found ProviderCompany'], 404);
+            }
+
+            // get charger types by eloquent
+            $chargerTypes = $providerCompany->chargerTypes;
+            return response()->json($chargerTypes);
+        }catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'error when fetching charger types'], 500);
         }
     }
 }

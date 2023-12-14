@@ -35,12 +35,12 @@ class UserController extends Controller
             $requestData['ip_address'] = $request->ip();
             $requestData['account_type'] = 'signed_up';
             Log::info('Request data with IP:', $requestData);
-
+            $requestData['user_role'] = $request['userRole'];
             $validatedData = Validator::make($requestData, [
                 'name' => 'required|max:255',
                 'email' => 'required|email|unique:users',
                 'password' => 'required',
-                'userRole' => 'required|in:user,provider',
+                'user_role' => 'required|in:user,provider',
                 'ip_address' => 'required|ip',
                 'account_type' => 'required|in:anonymous,signed_up,google',
             ])->validated();
@@ -48,6 +48,8 @@ class UserController extends Controller
             $validatedData['password'] = Hash::make($validatedData['password']);
             Log::info('validatedData:', $validatedData);
             $user = User::create($validatedData);
+            // log $user
+            Log::info('Created user:', $user->toArray());
             return response()->json($user, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error($e->getMessage());
@@ -81,43 +83,49 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         try {
+            // get user id from request
+            $id = $request->user()->id;
             $user = User::findOrFail($id);
 
             $validatedData = $request->validate([
                 'name' => 'required|max:255',
-                'email' => 'required|email|unique:users,email,' . $id,
-                // 如果允许更新密码
-                'password' => 'sometimes|required',
-                // 其他字段的验证规则...
+            // todo password change
+
+//              'password' => 'sometimes|required',
             ]);
-
-            if (!empty($validatedData['password'])) {
-                $validatedData['password'] = Hash::make($validatedData['password']);
+            // todo password change
+//            if (!empty($validatedData['password'])) {
+//                $validatedData['password'] = Hash::make($validatedData['password']);
+//            }
+            // if name is changed, update it
+            if($user->name !== $validatedData['name']){
+                $user->name = $validatedData['name'];
             }
-
-            $user->update($validatedData);
+            $user->save();
             return response()->json($user);
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到用户'], 404);
+            return response()->json(['error' => 'not found user'], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '更新用户时发生错误'], 500);
+            return response()->json(['error' => 'error when updating'], 500);
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         try {
+            // get user id from request
+            $id = $request->user()->id;
             $user = User::findOrFail($id);
             $user->delete();
             return response()->json(null, 204);
@@ -136,5 +144,20 @@ class UserController extends Controller
     public function profile(Request $request)
     {
         return $request->user();
+    }
+
+    // count users
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function count()
+    {
+        try {
+            $count = User::count();
+            return response()->json($count);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'unable to get users count'], 500);
+        }
     }
 }

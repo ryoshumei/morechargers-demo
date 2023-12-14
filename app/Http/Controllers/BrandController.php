@@ -19,7 +19,7 @@ class BrandController extends Controller
             return response()->json($brands);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '无法获取品牌列表'], 500);
+            return response()->json(['error' => 'unable to get brands list'], 500);
         }
     }
 
@@ -42,7 +42,7 @@ class BrandController extends Controller
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '创建品牌时发生错误'], 500);
+            return response()->json(['error' => 'unable to create brand'], 500);
         }
     }
 
@@ -57,10 +57,10 @@ class BrandController extends Controller
             return response()->json($brand);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到品牌'], 404);
+            return response()->json(['error' => 'unable to find brand'], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '获取品牌信息时发生错误'], 500);
+            return response()->json(['error' => 'error when getting brand'], 500);
         }
     }
 
@@ -85,10 +85,10 @@ class BrandController extends Controller
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到品牌'], 404);
+            return response()->json(['error' => 'unable to find brand '], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '更新品牌时发生错误'], 500);
+            return response()->json(['error' => 'unable to update brand '], 500);
         }
     }
 
@@ -104,10 +104,10 @@ class BrandController extends Controller
             return response()->json(null, 204);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到品牌'], 404);
+            return response()->json(['error' => 'unable to find brand '], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '删除品牌时发生错误'], 500);
+            return response()->json(['error' => 'unable to delete brand'], 500);
         }
     }
 }

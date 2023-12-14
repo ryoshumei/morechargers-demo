@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\VehicleModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -105,6 +106,27 @@ class VehicleModelController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return response()->json(['error' => '删除车辆模型时发生错误'], 500);
+        }
+    }
+
+    /**
+     * vehicle models by brand id by function vehicleModels
+     */
+    public function fetchByBrandId($id)
+    {
+        try {
+            // find brand by id by eloquent
+            $brand = Brand::find($id);
+            if (!$brand) {
+                return response()->json(['error' => 'not found brand'], 404);
+            }
+
+            // get vehicles
+            $vehicleModels = $brand->vehicleModels;
+            return response()->json($vehicleModels);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'not found vehicles'], 500);
         }
     }
 }

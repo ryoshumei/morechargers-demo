@@ -18,7 +18,7 @@ class ProviderCompanyController extends Controller
             return response()->json($providerCompanies);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '无法获取供应商公司列表'], 500);
+            return response()->json(['error' => 'unable to list provider companies'], 500);
         }
     }
 
@@ -40,7 +40,7 @@ class ProviderCompanyController extends Controller
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '创建供应商公司时发生错误'], 500);
+            return response()->json(['error' => 'unable to create provider company'], 500);
         }
     }
 
@@ -54,10 +54,10 @@ class ProviderCompanyController extends Controller
             return response()->json($providerCompany);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到供应商公司'], 404);
+            return response()->json(['error' => 'unable to find provider'], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '获取供应商公司信息时发生错误'], 500);
+            return response()->json(['error' => 'unable to get provider company'], 500);
         }
     }
 
@@ -81,10 +81,10 @@ class ProviderCompanyController extends Controller
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到供应商公司'], 404);
+            return response()->json(['error' => 'unable to find provider'], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '更新供应商公司时发生错误'], 500);
+            return response()->json(['error' => 'unable to update provider'], 500);
         }
     }
 
@@ -99,10 +99,26 @@ class ProviderCompanyController extends Controller
             return response()->json(null, 204);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到供应商公司'], 404);
+            return response()->json(['error' => 'unable to find provider'], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '删除供应商公司时发生错误'], 500);
+            return response()->json(['error' => 'unable to delete'], 500);
+        }
+    }
+
+    // count provider companies
+    /**
+     * Display a listing of the resource.
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function count()
+    {
+        try {
+            $count = ProviderCompany::count();
+            return response()->json($count);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'unable to get providers count'], 500);
         }
     }
 }
