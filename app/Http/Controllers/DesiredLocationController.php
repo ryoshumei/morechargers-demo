@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\DesiredLocationResource;
 use App\Models\DesiredLocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -14,12 +15,13 @@ class DesiredLocationController extends Controller
     public function index()
     {
         //
+        Log::info('DesiredLocationController - Index method reached');
         try {
-            $desiredLocations = DesiredLocation::all();
-            return response()->json($desiredLocations);
+            $locations = DesiredLocation::with(['brand', 'vehicleModel', 'user', 'chargerType', 'providerCompany'])->get();
+            return DesiredLocationResource::collection($locations);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '无法获取期望位置列表'], 500);
+            return response()->json(['error' => 'could not get desiredLocations'], 500);
         }
     }
 
@@ -28,31 +30,47 @@ class DesiredLocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
         try {
+            // validate the request data
             $validatedData = $request->validate([
-                // add validation rules
+                'radius' => 'required|numeric',
+                'hasEv' => 'required|boolean',
+                'evBrandId' => 'nullable|integer',
+                'evModel' => 'nullable|integer',
+                'providerCompany' => 'required|integer',
+                'chargerType' => 'required|integer',
+                'comment' => 'nullable|string',
                 'latitude' => 'required|numeric',
                 'longitude' => 'required|numeric',
-                'hope_radius' => 'required|integer',
-                'has_ev_car' => 'required|boolean',
-                'brand_id' => 'nullable|integer',
-                'model_id' => 'nullable|integer',
-                'charger_type_id' => 'nullable|integer',
-                'provider_company_id' => 'nullable|integer',
-                'user_id' => 'required|integer',
-                'comment' => 'nullable|string',
-                // 其他字段...
             ]);
+            // create the model data
+            $modelData = [
+                'hope_radius' => $validatedData['radius'],
+                'has_ev_car' => $validatedData['hasEv'],
+                'brand_id' => $validatedData['evBrandId'],
+                'model_id' => $validatedData['evModel'],
+                'charger_type_id' => $validatedData['chargerType'],
+                'provider_company_id' => $validatedData['providerCompany'],
+                'latitude' => $validatedData['latitude'],
+                'longitude' => $validatedData['longitude'],
+            ];
+            // if the user is authenticated, add user_id
+            if (auth()->check()) {
+                $modelData['user_id'] = auth()->id();
+            }
 
-            $desiredLocation = DesiredLocation::create($validatedData);
+            // if the comment is not empty, add comment
+            if (!empty($validatedData['comment'])) {
+                $modelData['comment'] = $validatedData['comment'];
+            }
+            $desiredLocation = DesiredLocation::create($modelData);
             return response()->json($desiredLocation, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error($e->getMessage());
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '创建期望位置时发生错误'], 500);
+            return response()->json(['error' => 'error when creating'], 500);
         }
     }
 
@@ -67,10 +85,10 @@ class DesiredLocationController extends Controller
             return response()->json($desiredLocation);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到期望位置'], 404);
+            return response()->json(['error' => 'unable to find location'], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '获取期望位置信息时发生错误'], 500);
+            return response()->json(['error' => 'error when finding location'], 500);
         }
     }
 
@@ -97,10 +115,10 @@ class DesiredLocationController extends Controller
             return response()->json(['error' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到期望位置'], 404);
+            return response()->json(['error' => 'unable to find location'], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '更新期望位置时发生错误'], 500);
+            return response()->json(['error' => 'error when updating location'], 500);
         }
     }
 
@@ -116,10 +134,10 @@ class DesiredLocationController extends Controller
             return response()->json(null, 204);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '未找到期望位置'], 404);
+            return response()->json(['error' => 'unable to find location'], 404);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-            return response()->json(['error' => '删除期望位置时发生错误'], 500);
+            return response()->json(['error' => 'error when deleting location'], 500);
         }
     }
 
@@ -138,6 +156,21 @@ class DesiredLocationController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return response()->json(['error' => 'could not get coordinates'], 500);
+        }
+    }
+
+    // count desired locations
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function count()
+    {
+        try {
+            $count = DesiredLocation::count();
+            return response()->json($count);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'unable to get desired locations count'], 500);
         }
     }
 }
