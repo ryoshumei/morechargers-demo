@@ -33,6 +33,8 @@ class RoleMiddleware
     private function checkUserHasAnyRole($user, $roles)
     {
         foreach ($roles as $role) {
+            Log::info('CheckRole Middleware - Checking role: ', ['role' => $role]);
+            Log::info('CheckRole Middleware - User has role: ', ['hasRole' => $user->hasRole($role)]);
             if ($user->hasRole($role)) {
                 return true;
             }

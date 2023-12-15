@@ -47,7 +47,7 @@ Route::prefix('v1')->group(function (){
             Route::post('feedback', [FeedbackController::class, 'store']);
 
             // with role admin, provider
-            Route::middleware('role:admin, provider')->group(function (){
+            Route::middleware('role:admin,provider')->group(function (){
                 Route::get('desired-location', [DesiredLocationController::class, 'index']);
             });
 
