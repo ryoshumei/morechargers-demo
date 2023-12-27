@@ -56,12 +56,12 @@ Ensure you have Docker and Docker Compose installed.
     - View Dashboard (including number of users, surveys, and charging station companies)
 
 ## Screenshots
-<img src="./githubimgs/home.png" alt="Home" width="500"/>
-<img src="./githubimgs/login.png" alt="Login" width="500"/>
-<img src="./githubimgs/signup.png" alt="SingUp" width="500"/>
-<img src="./githubimgs/profile.png" alt="Profile" width="500"/>
-<img src="./githubimgs/survey.png" alt="Survey" width="500"/>
-<img src="./githubimgs/dashboard.png" alt="DashBoard" width="500"/>
+<img src="./githubimgs/home.png" alt="Home" width="800"/>
+<img src="./githubimgs/login.png" alt="Login" width="800"/>
+<img src="./githubimgs/signup.png" alt="SingUp" width="800"/>
+<img src="./githubimgs/profile.png" alt="Profile" width="800"/>
+<img src="./githubimgs/survey.png" alt="Survey" width="800"/>
+<img src="./githubimgs/dashboard.png" alt="DashBoard" width="800"/>
 
 
 ## License
