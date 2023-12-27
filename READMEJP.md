@@ -3,13 +3,16 @@
 ## プロジェクトの説明
 ProjectMoreChargersは、ユーザーが充電ステーションを建設してほしい場所と一部のユーザー情報を提出できるプラットフォームです。このデータは、充電ステーションのプロバイダーが建設プロジェクトの参考にすることができます。
 
-## テクノロジースタック
+## デモ
+プロジェクトはAWSにデプロイされており、[http://demo.morechargers.com](http://demo.morechargers.com).からアクセスできます。
+
+## テクノロジースタック For Demo
 - **フロントエンド**: Vue.js, Tailwind CSS
 - **バックエンド**: Laravel
 - **コンテナ化**: DockerとLaravel Sail
 - **認証**: Laravel Sanctum
 - **テスト**: PHPUnit
-- **クラウドプラットフォーム**: AWS
+- **クラウドプラットフォーム**: AWS (ECS on EC2, Route53)
 
 ## インストール
 
@@ -28,7 +31,7 @@ DockerとDocker Composeがインストールされていることを確認して
    ```
 
 ## 使い方
-- **デモ**: プロジェクトはAWSにデプロイされており、[デモリンク]からアクセスできます。
+- **デモ**: プロジェクトはAWSにデプロイされており、[http://demo.morechargers.com](http://demo.morechargers.com).からアクセスできます。
 
 - **ユーザータイプ**:
     - **匿名ユーザー**: 充電ステーションの希望場所についての調査を記入できます。
@@ -53,7 +56,12 @@ DockerとDocker Composeがインストールされていることを確認して
     - ダッシュボードの表示（ユーザー数、調査数、充電ステーション会社の数を含む）
 
 ## スクリーンショット
-(プロジェクトのスクリーンショットをここに追加)
+<img src="./githubimgs/home.png" alt="Home" width="500"/>
+<img src="./githubimgs/login.png" alt="Login" width="500"/>
+<img src="./githubimgs/signup.png" alt="SingUp" width="500"/>
+<img src="./githubimgs/profile.png" alt="Profile" width="500"/>
+<img src="./githubimgs/survey.png" alt="Survey" width="500"/>
+<img src="./githubimgs/dashboard.png" alt="DashBoard" width="500"/>
 
 ## ライセンス
-このプロジェクトは[MITライセンス](LICENSE)の下でライセンスされています。
+このプロジェクトは[MITライセンス](https://opensource.org/license/mit/)の下でライセンスされています。

@@ -4,13 +4,15 @@
 ## Project Description
 ProjectMoreChargers is a platform that allows users to submit locations where they wish to have charging stations built, along with some user information. This data can be used by charging station providers as a reference for their construction projects.
 
-## Technology Stack
+## Demo
+The project is deployed on AWS, accessible via [http://demo.morechargers.com](http://demo.morechargers.com).
+## Technology Stack For Demo
 - **Frontend**: Vue.js, Tailwind CSS
 - **Backend**: Laravel
 - **Containerization**: Docker and Laravel Sail
 - **Authentication**: Laravel Sanctum
 - **Testing**: PHPUnit
-- **Cloud Platform**: AWS
+- **Cloud Platform**: AWS (ECS on EC2, Route53)
 
 ## Installation
 
@@ -29,7 +31,7 @@ Ensure you have Docker and Docker Compose installed.
    ```
 
 ## Usage
-- **Demo**: The project is deployed on AWS, accessible via [demo link].
+- **Demo**: The project is deployed on AWS, accessible via [http://demo.morechargers.com](http://demo.morechargers.com).
 
 - **User Types**:
     - **Anonymous Users**: Can fill out surveys about desired charging station locations.
@@ -54,7 +56,13 @@ Ensure you have Docker and Docker Compose installed.
     - View Dashboard (including number of users, surveys, and charging station companies)
 
 ## Screenshots
-(Add project screenshots here)
+<img src="./githubimgs/home.png" alt="Home" width="500"/>
+<img src="./githubimgs/login.png" alt="Login" width="500"/>
+<img src="./githubimgs/signup.png" alt="SingUp" width="500"/>
+<img src="./githubimgs/profile.png" alt="Profile" width="500"/>
+<img src="./githubimgs/survey.png" alt="Survey" width="500"/>
+<img src="./githubimgs/dashboard.png" alt="DashBoard" width="500"/>
+
 
 ## License
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the [MIT License](https://opensource.org/license/mit/).
