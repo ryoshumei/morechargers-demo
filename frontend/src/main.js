@@ -10,6 +10,7 @@ import { useUserStore } from './store/user';
 //
 // 设置 Axios 拦截器
 // set axios interceptor
+axios.defaults.withCredentials = true;// allow axios to send cookies
 axios.interceptors.response.use(response => {
     // success handler
     return response;
