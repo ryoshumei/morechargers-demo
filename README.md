@@ -4,6 +4,15 @@
 ## Project Description
 ProjectMoreChargers is a platform that allows users to submit locations where they wish to have charging stations built, along with some user information. This data can be used by charging station providers as a reference for their construction projects.
 
+## Design
+### Use case design (Concept)
+
+<img src="./githubimgs/conceptmap.png" alt="Concept" width="800"/>
+
+### Database design
+
+![ER Diagram](https://www.mermaidchart.com/raw/8d3f9656-259f-402a-bce2-2e450162ed24?theme=dark&version=v0.1&format=svg)
+
 ## Demo
 The project is deployed on AWS, accessible via [http://demo.morechargers.com](http://demo.morechargers.com).
 ## Technology Stack For Demo
