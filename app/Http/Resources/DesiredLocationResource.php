@@ -19,11 +19,11 @@ class DesiredLocationResource extends JsonResource
             'latitude' => $this->latitude,
             'longitude' => $this->longitude,
             'hope_radius' => $this->hope_radius,
-            'brand_name' => $this->brand->name,
-            'model_name' => $this->vehicleModel->name,
-            'charger_type_name' => $this->chargerType->name,
-            'provider_company_name' => $this->providerCompany->name,
-            'comment' => $this->comment,
+            'brand_name' => $this->brand->name ?? '',
+            'model_name' => $this->vehicleModel->name ?? '',
+            'charger_type_name' => $this->chargerType->name ?? '',
+            'provider_company_name' => $this->providerCompany->name ?? '',
+            'comment' => $this->comment ?? '',
         ];
     }
 }
