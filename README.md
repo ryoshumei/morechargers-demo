@@ -15,6 +15,17 @@ ProjectMoreChargers is a platform that allows users to submit locations where th
 
 ## Demo
 The project is deployed on AWS, accessible via [http://demo.morechargers.com](http://demo.morechargers.com).
+
+### Test accounts:
+- **User**: 
+- id: user@user.com   
+- password: password
+- **Provider**:
+- id: provider@provider.com
+- password: password
+- **Admin**:
+- id: admin@admin.com
+- password: password
 ## Technology Stack For Demo
 - **Frontend**: Vue.js, Tailwind CSS
 - **Backend**: Laravel

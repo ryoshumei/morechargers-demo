@@ -6,6 +6,16 @@ ProjectMoreChargersは、ユーザーが充電ステーションを建設して�
 ## デモ
 プロジェクトはAWSにデプロイされており、[http://demo.morechargers.com](http://demo.morechargers.com).からアクセスできます。
 
+### Test accounts:
+- **User**:
+- id: user@user.com
+- password: password
+- **Provider**:
+- id: provider@provider.com
+- password: password
+- **Admin**:
+- id: admin@admin.com
+- password: password
 ## テクノロジースタック For Demo
 - **フロントエンド**: Vue.js, Tailwind CSS
 - **バックエンド**: Laravel
